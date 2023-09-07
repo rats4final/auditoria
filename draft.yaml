@@ -1,0 +1,45 @@
+models:
+  #probablemente este coso no este actualizado a lv10 pero sirve en su mayoria
+  # no tamar en cuenta este draft del modelo user, los demas si sirven
+  User:
+    name: string
+    email: string unique
+    password: string
+    last_name: string
+    birth_date: date
+    image: string
+    cellphone: string
+    remember_token: remembertoken
+    email_verified_at: timestamp
+    relationships:
+      belongsToMany: Service
+
+  Service:
+    name: string unique
+    description: string nullable
+    service_type_id: id
+    price: integer
+    code: string
+    relationships:
+      belongsToMany: User, Invoice
+
+  ServiceType:
+    name: string
+    description: string nullable
+    relationships:
+      hasMany: Service
+
+  Invoice:
+    issue_date: datetime
+    user: string
+    total: integer
+    client: string
+    deadline: date
+    client_id_card: string
+    authorization_code: string
+    control_code: string
+    relationships:
+      belongsToMany: Service
+
+seeders: Invoice, ServiceType, Service, User
+
