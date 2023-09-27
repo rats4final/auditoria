@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ServiceTypeResource\Pages;
-use App\Filament\Resources\ServiceTypeResource\RelationManagers;
-use App\Models\ServiceType;
+use App\Filament\Resources\ServiceResource\Pages;
+use App\Filament\Resources\ServiceResource\RelationManagers;
+use App\Models\Service;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ServiceTypeResource extends Resource
+class ServiceResource extends Resource
 {
-    protected static ?string $model = ServiceType::class;
+    protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,12 +23,7 @@ class ServiceTypeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->minLength(3)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->minLength(10)
-                    ->maxLength(255)
+                //
             ]);
     }
 
@@ -36,16 +31,7 @@ class ServiceTypeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable()
-                    //->description(fn (ServiceType $serviceType): string => $serviceType->description)
-                    ->wrap(),
-                Tables\Columns\TextColumn::make('description')
-                    ->wrap(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->sortable()
-                    ->dateTime()
+                //
             ])
             ->filters([
                 //
@@ -62,20 +48,20 @@ class ServiceTypeResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListServiceTypes::route('/'),
-            'create' => Pages\CreateServiceType::route('/create'),
-            'edit' => Pages\EditServiceType::route('/{record}/edit'),
+            'index' => Pages\ListServices::route('/'),
+            'create' => Pages\CreateService::route('/create'),
+            'edit' => Pages\EditService::route('/{record}/edit'),
         ];
-    }
+    }    
 }
