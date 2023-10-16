@@ -19,11 +19,27 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make("name")
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make("description"),
+                Forms\Components\Select::make("service_type_id")
+                    ->relationship("serviceType", "name")
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make("name"),
+                        Forms\Components\TextInput::make("description")
+                    ])
+                    ->required(),
+                Forms\Components\TextInput::make("price"),
+                Forms\Components\TextInput::make("code")
             ]);
     }
 
@@ -31,10 +47,11 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make("name"),
+                Tables\Columns\TextColumn::make("description")
             ])
             ->filters([
-                //
+               // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -42,6 +59,8 @@ class ServiceResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->emptyStateActions([
@@ -63,5 +82,13 @@ class ServiceResource extends Resource
             'create' => Pages\CreateService::route('/create'),
             'edit' => Pages\EditService::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('code');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();
