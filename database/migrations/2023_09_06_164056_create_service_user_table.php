@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('service_user', function (Blueprint $table) {
             $table->foreignId('service_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->time('shift_start');
-            $table->time('shift_end');
+            $table->time('shift_start')->nullable();
+            $table->time('shift_end')->nullable();
         });
 
         Schema::enableForeignKeyConstraints();

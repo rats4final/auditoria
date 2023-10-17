@@ -3,18 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\ServicesRelationManager;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
-use Filament\Forms\FormsComponent;
-use Filament\Infolists\Components\Component as ComponentsComponent;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -32,10 +27,10 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('cellphone'),
                 Forms\Components\TextInput::make('email'),
                 Forms\Components\TextInput::make('password')
-                ->password(),
+                    ->password(),
                 Forms\Components\FileUpload::make('image')
-                    ->image(),
-
+                    ->image()
+                    ->imageEditor(),
             ]);
     }
 
@@ -65,14 +60,14 @@ class UserResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
-            //
+            ServicesRelationManager::class
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -80,5 +75,5 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
-    }    
+    }
 }

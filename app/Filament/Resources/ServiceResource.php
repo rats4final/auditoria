@@ -28,7 +28,8 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make("name")
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make("description"),
+                Forms\Components\TextInput::make("description")
+                    ->columnSpan('full'),
                 Forms\Components\Select::make("service_type_id")
                     ->relationship("serviceType", "name")
                     ->searchable()
@@ -38,7 +39,9 @@ class ServiceResource extends Resource
                         Forms\Components\TextInput::make("description")
                     ])
                     ->required(),
-                Forms\Components\TextInput::make("price"),
+                Forms\Components\TextInput::make("price")
+                    ->numeric()
+                    ->prefix("Bs"),
                 Forms\Components\TextInput::make("code")
             ]);
     }
@@ -47,8 +50,12 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("name"),
-                Tables\Columns\TextColumn::make("description")
+                Tables\Columns\TextColumn::make("name")
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make("description"),
+                Tables\Columns\TextColumn::make("serviceType.name"),
+                Tables\Columns\TextColumn::make("price")
             ])
             ->filters([
                // Tables\Filters\TrashedFilter::make(),
