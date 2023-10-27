@@ -24,10 +24,13 @@ ENTRYPOINT ["Docker/entrypoint.sh"]
 FROM node:21-alpine as node
 
 WORKDIR /var/www
-COPY . .
+#COPY . .
+COPY package*.json ./
+# i think we should only copy the package.json
 
 RUN npm install
-VOLUME /var/www/node_modules
+RUN npm run build
+#VOLUME /var/www/node_modules
 
 
 
