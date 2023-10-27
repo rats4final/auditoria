@@ -2,6 +2,8 @@
 
 FROM php:8.2 as auditoria
 
+COPY ./Docker/entrypoint.sh /usr/local/bin/
+
 RUN apt-get update -y && apt-get install -y openssl zip unzip git
 #RUN docker-php-ext-install intl pdo pdo_mysql
 
