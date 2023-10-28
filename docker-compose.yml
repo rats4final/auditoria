@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
     #auditoria app
     auditoria:
@@ -17,7 +17,8 @@ services:
         ports:
             - "8000:8000"
         depends_on:
-            - db
+          db:
+            condition: service_healthy
 
 
     #MySQL database
@@ -32,17 +33,10 @@ services:
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
         volumes:
             - db-data:/var/lib/mysql
-
-    #Node js
-    node:
-        build:
-            context: .
-            target: node
-        volumes:
-            - .:/usr/src
-            - node_modules:/usr/src/node_modules
-        tty: true
-
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
 
 volumes:
     db-data: ~

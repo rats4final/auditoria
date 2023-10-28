@@ -11,6 +11,9 @@ else
     echo "env file exists."
 fi
 
+npm install
+npm run build
+
 php artisan migrate --seed #change seeders to admin only, once app is in prod
 php artisan key:generate
 php artisan cache:clear
