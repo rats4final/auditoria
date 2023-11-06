@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::unguard();
+        Model::unguard();//disable model guarding for filament
         Health::checks([
            // OptimizedAppCheck::new(),
             DebugModeCheck::new(),
@@ -34,5 +35,8 @@ class AppServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
             UsedDiskSpaceCheck::new(),
         ]);
+        if ($this->app->environment('production')){
+            URL::forceScheme('https');//https for prod
+        }
     }
 }
