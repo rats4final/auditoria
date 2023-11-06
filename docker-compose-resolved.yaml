@@ -1,0 +1,82 @@
+name: auditoria
+services:
+  auditoria:
+    build:
+      context: /home/rats4final/dockerProjects/auditoria
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: local
+      target: auditoria
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: app
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 8000
+        published: "8000"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /home/rats4final/dockerProjects/auditoria
+        target: /var/www
+        bind:
+          create_host_path: true
+      - type: volume
+        source: node_modules
+        target: /var/www/node_modules
+        volume: {}
+    working_dir: /var/www
+  db:
+    environment:
+      MYSQL_DATABASE: auditoria
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USERNAME: root
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+      timeout: 20s
+      retries: 10
+    image: mysql:latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 3306
+        published: "3306"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/mysql
+        volume: {}
+  phpmyadmin:
+    environment:
+      'PMA_HOST ': ' db'
+    image: phpmyadmin
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8080"
+        protocol: tcp
+    restart: always
+networks:
+  default:
+    name: auditoria_default
+volumes:
+  db-data:
+    name: auditoria_db-data
+  node_modules:
+    name: auditoria_node_modules
