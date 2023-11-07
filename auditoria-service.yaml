@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-resolved.yaml
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml --volumes hostPath
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
@@ -15,5 +15,6 @@ spec:
       targetPort: 8000
   selector:
     io.kompose.service: auditoria
+  type: LoadBalancer
 status:
   loadBalancer: {}

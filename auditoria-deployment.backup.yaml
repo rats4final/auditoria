@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-resolved.yaml --volumes hostPath
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose-resolved.yaml --volumes hostPath
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
@@ -36,12 +36,23 @@ spec:
           stdin: true
           tty: true
           name: auditoria
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 0
           ports:
             - containerPort: 8000
               hostPort: 8000
               protocol: TCP
           resources: {}
+          volumeMounts:
+            - mountPath: /var/www
+              name: auditoria-claim0
+            - mountPath: /var/www/node_modules
+              name: node-modules
+          workingDir: /var/www
+      restartPolicy: Always
+      volumes:
+        - name: auditoria-claim0
+          persistentVolumeClaim:
+            claimName: auditoria-claim0
+        - name: node-modules
+          persistentVolumeClaim:
+            claimName: node-modules
 status: {}

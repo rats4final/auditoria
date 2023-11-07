@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -f docker-compose-resolved.yaml
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml --volumes hostPath
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose-resolved.yaml
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml --volumes hostPath
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
@@ -26,8 +26,8 @@ spec:
     spec:
       containers:
         - env:
-            - name: PMA_HOST
-              value: db
+            - name: 'PMA_HOST '
+              value: ' db'
           image: phpmyadmin
           name: phpmyadmin
           ports:
