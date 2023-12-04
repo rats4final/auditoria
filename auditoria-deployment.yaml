@@ -32,7 +32,7 @@ spec:
               value: local
             - name: CONTAINER_ROLE
               value: app
-          image: rats4final/auditoria4
+          image: rats4final/auditoria5
           stdin: true
           tty: true
           name: auditoria
