@@ -21,6 +21,7 @@ npm run build
 #    php artisan migrate --seed #change seeders to admin only, once app is in prod
 #fi
 
+php artisan migrate --seed
 php artisan key:generate
 php artisan cache:clear
 

@@ -35,8 +35,8 @@ class AppServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
             UsedDiskSpaceCheck::new(),
         ]);
-        if ($this->app->environment('production')){
-            URL::forceScheme('https');//https for prod
-        }
+        //if ($this->app->environment('production')){
+        //    URL::forceScheme('https');//https for prod
+        //}
     }
 }
