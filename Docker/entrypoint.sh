@@ -15,11 +15,11 @@ fi
 npm install
 npm run build
 
-if [ -z "$(php artisan migrate:status --database=mysql | grep 'No migrations found')" ]; then
-     echo "Database already migrated. Skipping migration."
-else
-    php artisan migrate --seed #change seeders to admin only, once app is in prod
-fi
+#if [ -z "$(php artisan migrate:status --database=mysql | grep 'No migrations found')" ]; then
+#     echo "Database already migrated. Skipping migration."
+#else
+#    php artisan migrate --seed #change seeders to admin only, once app is in prod
+#fi
 
 php artisan key:generate
 php artisan cache:clear
